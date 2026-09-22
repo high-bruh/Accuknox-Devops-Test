@@ -34,7 +34,7 @@ Add `127.0.0.1 wisecow.local` to the hosts file and test with `curl -k https://w
 
 ## CI/CD setup
 
-Every pull request runs shell, Python, and manifest validation. A push to `main` builds, scans, and pushes `ghcr.io/<owner>/wisecow:<commit-sha>`. To enable continuous deployment, create a protected `production` environment with a `KUBE_CONFIG` secret containing the base64-encoded kubeconfig for a reachable cluster. The deploy job uses `kubectl rollout status` and fails on an unsuccessful rollout.
+Every pull request runs shell, Python, and manifest validation. A push to `main` builds, scans, and pushes `ghcr.io/<owner>/wisecow:<commit-sha>`. Deployment is opt-in: set the repository variable `ENABLE_DEPLOY=true`, then create a protected `production` environment with a `KUBE_CONFIG` secret containing the base64-encoded kubeconfig for a reachable cluster. The deploy job uses `kubectl rollout status` and fails on an unsuccessful rollout.
 
 Do not use a local Kind or Docker Desktop kubeconfig with a GitHub-hosted runner: its `server` normally points to `127.0.0.1`, which refers to the hosted runner, not your computer. Use a cloud Kubernetes cluster, or configure a self-hosted GitHub Actions runner on the machine running Kind. Generate the secret only after confirming that the target API endpoint is reachable from the runner:
 
