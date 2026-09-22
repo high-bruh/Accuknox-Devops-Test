@@ -22,9 +22,11 @@ jobs:
       - name: Validate Python scripts
         run: python -m py_compile scripts/*.py
       - name: Validate manifests
-        uses: azure/k8s-lint@v1
-        with:
-          manifests: k8s/*.yaml
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz \
+            | tar -xz -C /tmp kubeconform
+          /tmp/kubeconform -strict -ignore-missing-schemas -summary k8s/*.yaml
 
   build-push:
     needs: validate
