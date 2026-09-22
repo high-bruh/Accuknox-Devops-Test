@@ -1,0 +1,26 @@
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  name: wisecow-zero-trust
+  namespace: wisecow
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wisecow
+  action: Block
+  process:
+    matchPaths:
+      - path: /usr/bin/curl
+      - path: /usr/bin/wget
+      - path: /usr/bin/cat
+      - path: /usr/bin/ssh
+      - path: /usr/bin/nmap
+  file:
+    matchPaths:
+      - path: /etc/shadow
+      - path: /etc/gshadow
+      - path: /etc/hostname
+      - path: /root/.ssh/authorized_keys
+  network:
+    matchProtocols:
+      - protocol: raw

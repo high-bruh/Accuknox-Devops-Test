@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: wisecow-default-deny-egress
+  namespace: wisecow
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: wisecow
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 4499
+  egress: []
