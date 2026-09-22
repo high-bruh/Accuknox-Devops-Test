@@ -33,10 +33,3 @@ Resource: /etc/hostname
 Policy: wisecow-zero-trust
 Action: Block
 ```
-
-## Local limitation
-
-The local Windows Docker Desktop / WSL2 Kind environment does not expose BPF
-LSM to the Kubernetes node. The actual test returned exit code 0 and emitted
-no enforcement alert. Genuine screenshot evidence requires a Linux node with
-BPF LSM support.
