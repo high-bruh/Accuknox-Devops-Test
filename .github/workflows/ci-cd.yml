@@ -74,8 +74,15 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
+          set -euo pipefail
+          if [ -z "$KUBE_CONFIG" ]; then
+            echo "::error::KUBE_CONFIG is not configured in the production environment."
+            exit 1
+          fi
           mkdir -p "$HOME/.kube"
           printf '%s' "$KUBE_CONFIG" | base64 --decode > "$HOME/.kube/config"
+          kubectl config current-context
+          kubectl cluster-info --request-timeout=10s
       - name: Deploy immutable image
         run: |
           kubectl apply -f k8s/namespace.yaml
